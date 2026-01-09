@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: bar-income-expenditure
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    disk:
+      name: bar-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: DATA_DIR
+        value: /data
+      - key: BAR_ADMIN_USERNAME
+        sync: false
+      - key: BAR_ADMIN_PASSWORD
+        sync: false
+      - key: BAR_SECRET_KEY
+        sync: false
