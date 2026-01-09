@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Gettz NiteClub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+
+  <body>
+    <div class="container">
+
+      <!-- Top Bar -->
+      <div class="topbar">
+
+        <!-- Navigation (only when logged in) -->
+        {% if session.get('is_admin') %}
+          <nav>
+            <a href="{{ url_for('sales') }}">Sales</a>
+            <a href="{{ url_for('expenses') }}">Expenses</a>
+            <a href="{{ url_for('summary') }}">Summary</a>
+          </nav>
+        {% else %}
+          <div></div>
+        {% endif %}
+
+        <!-- Actions -->
+        <div class="actions">
+          {% if session.get('is_admin') %}
+            <a href="{{ url_for('export_sales_csv') }}">Export Sales CSV</a>
+            <a href="{{ url_for('export_expenses_csv') }}">Export Expenses CSV</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+          {% endif %}
+        </div>
+
+      </div>
+
+      <!-- Flash Messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, msg in messages %}
+            <div class="flash {{ category }}">{{ msg }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <!-- Page Content -->
+      {% block content %}{% endblock %}
+
+    </div>
+  </body>
+</html>
